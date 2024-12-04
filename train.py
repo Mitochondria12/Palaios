@@ -15,12 +15,12 @@ def command_line_parameters():
 if __name__ == "__main__":
     command=command_line_parameters()
     batch_size=(command.batch_size)
-    model=Transformer(5)
+    model=Transformer(12)
     model.train()
     #assigning the loss formula
     loss_fn = nn.CrossEntropyLoss(ignore_index=0)
     #assigning the optimiser which calculates the gradients and performs the update methods
-    optimiser=torch.optim.SGD(model.parameters(),lr=0.03)
+    optimiser=torch.optim.SGD(model.parameters(),lr=0.3)
     number_of_batches=round(samples/batch_size)
     data_holder=create_dataloader(batch_size)
     

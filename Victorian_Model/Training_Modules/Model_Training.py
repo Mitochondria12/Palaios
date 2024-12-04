@@ -9,43 +9,32 @@ from torch.nn.utils.rnn import pad_sequence
 #dataset comprises training features and ground truth
 def training_batch(model,optimiser,loss_fn,batch_features,batch_labels):
     
-    """print("Debug: Batch Model Input Tensor Dimensions and Values")
-    print(batch_features)
-    print(batch_features.shape)"""
-
-    """print("Model Output Forward Pass")"""
-
     batch_predictions=model(batch_features)
     batch_predicted_tokens=batch_predictions[:,1:-1,:]
     batch_labels=batch_labels[:,2:]
 
-    """print("Debug: Batch Model Output Tensor Dimensions and Values")
-    print(batch_predicted_tokens.shape)
-    print(batch_predicted_tokens)
-
-    print("Debug: Batch Labels Tensor Dimensions and Values")
-    print(batch_labels.shape)
-    print(batch_labels)"""
-    #prediction is a 
-    logits_reshaped = batch_predicted_tokens.reshape(-1, batch_predicted_tokens.size(-1))  # Shape: (batch_size * seq_length, vocab_size)
+    #Reformat model output and labels
+    logits_reshaped = batch_predicted_tokens.reshape(-1, batch_predicted_tokens.size(-1))  
     targets_reshaped = batch_labels.reshape(-1)
+
+    #Calculate loss
     loss=loss_fn(logits_reshaped,targets_reshaped)
-    #show loss value
     print("Model Loss for batch.")
     print(loss.item())
+
     #performs the backward propagation pass to calculate all the gradient changes to reduce the loss value
     loss.backward()
+
     #updates all the parameters of the models with the gradient change to reduce the loss value
     optimiser.step()
+
     #clears the loss backward gradient values so it doesn't interfere with the next calculation.
     optimiser.zero_grad()
 
-    print(batch_predictions.shape)
-    predicted_tokens=torch.argmax(batch_predictions,dim=-1)
-    labels=torch.argmax(batch_labels,dim=-1)
-    print("predicted tokens")
+    predicted_tokens=torch.argmax(batch_predicted_tokens,dim=-1)
     print(predicted_tokens)
-    print("labels")
+
+    labels=torch.argmax(batch_labels,dim=-1)
     print(labels)
 
 def clean_function(txt):
@@ -54,7 +43,7 @@ def clean_function(txt):
 """This extracts the old medical literature dataset and puts it in a 
 data storage object segregated into batches."""
 def create_dataloader(batch_size):
-    dataset_to_load=Old_Medical_Dataset(clean_function,r"C:\Users\James\Documents\GenAI\Victorian_Model\Clean_Dataset\medical_dataset_written")
+    dataset_to_load=Old_Medical_Dataset(clean_function,r"C:\Users\James\Documents\GenAI\Palaios\Victorian_Model\Clean_Dataset\medical_dataset_written")
     train_dataloader = DataLoader(dataset_to_load, batch_size, shuffle=True)
     return(train_dataloader)
 

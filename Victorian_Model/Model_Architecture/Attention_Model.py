@@ -88,7 +88,7 @@ class Transformer_Layer(nn.Module):
 
     def __init__(self):
         super(Transformer_Layer,self).__init__()
-        self.attn_module=Multi_Self_Attention_Head_Block(768,3)
+        self.attn_module=Multi_Self_Attention_Head_Block(768,12)
         self.norm_module=Normalisation_Block()
         self.addin_module=Previous_Input()
         self.feed_module=Feed_Forward_Network()
