@@ -1,0 +1,38 @@
+Cleaned the text data.
+creating a data tokeniser.
+
+Goals
+Complete the transformer pipeline.
+We have the dataset, we need to put it into a appropriate format of training data and labels.
+We need to transform the words into token embeddings.
+We need to feed the model during training so we need all the data into a tensor format in set batch sizes.
+We need to do this for a series of epochs.
+
+14th November 2024 3pm
+Organised the file contents for the project.
+Working in Dataset Pipeline.
+Attempted to get accessed to module from different parts of the directory.
+Python search for files start in the root folder you are located within
+and shifts down a directory, so if your module is in the above folder then
+you need to specifiy it using sys module by changing the environment path.
+Or you can move the file you are starting to the top folder which contains all your modules. If when running your program a module needs to access another modules function within a different folder it is possible as long as the main program is located upstream of all modules used.
+
+15th November 2024 1pm
+Focused on converting my datasets into batches, updating myself on how to load data and certain memory constraints meaning you should at times upload partially a dataset using the iterdataset method, and other times you can upload the entire data and save it into your memory. Learning how the MINIGPT4 processes their datasets and see they combine different datasets which would be a useful feature to eventually incorporate along with combining different data loading frameworks.
+
+19th November 2024 3pm
+Modifying dataloader so that it does not reload each time but cycles through.
+So we have a dataloader, and we iterate through it sequentially. The next step is to combine it with an online reposistory we only want to partially load step by step. So we search for a medical literature reposistory to practice this step.
+Following this it is time to start training my model, this process can be started immediately too.
+
+27th November 2024
+Identified that the ground truth labels were not in a tensor format to compute a loss score. Tokenisation performed to each word in a series of sequences within a batch, each sequence has
+padding correctly applied using prebuilt autotokenisation from transformer library. Working now to make each token a tensor with dimension size of BERT token dictionary with all positions within token equal to zero accept the token value. This should create a vector of values. Currently we have a matrix consisting of token and batches. We want a 3d tensor consisting of an dictionary dimension.
+
+28th November 2024
+The output of the transformer model remains static, each time a different batch is uploaded it generates the same output. Confirming batch input is different before reviewing internal model architecture. The problem is within the model.
+
+4th December 2024
+Modified the loss formula, it now outputs loss metrics which are understandable. Cross cateogrical entropy applied.
+It seems that the outputs slowly get stuck into a minimum where the best loss score is to predict one specific tokn for every position.
+Probably need to modify the updater.
